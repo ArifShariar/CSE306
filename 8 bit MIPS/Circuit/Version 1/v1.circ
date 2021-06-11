@@ -666,6 +666,7 @@ fffdd
       <text font-family="SansSerif" font-size="12" text-anchor="middle" x="111" y="226">MEM2REG</text>
       <text font-family="SansSerif" font-size="12" text-anchor="middle" x="115" y="245">ALU SRC</text>
       <text font-family="SansSerif" font-size="12" text-anchor="middle" x="116" y="264">REG DST</text>
+      <text font-family="SansSerif" font-size="12" text-anchor="middle" x="100" y="296">CONTROL UNIT</text>
       <circ-port height="8" pin="150,250" width="8" x="46" y="146"/>
       <circ-port height="10" pin="780,40" width="10" x="145" y="55"/>
       <circ-port height="10" pin="780,60" width="10" x="145" y="75"/>
@@ -738,7 +739,8 @@ fffdd
       <a name="addrWidth" val="4"/>
       <a name="dataWidth" val="16"/>
       <a name="contents">addr/data: 4 16
-71f aaaa bbbb
+71f 480 1482 1c85 2283 2d01 3483 3a82
+4486 4d11 53c0 5a81 6481 6f20 7484 7a80
 </a>
     </comp>
     <comp lib="0" loc="(780,40)" name="Pin">
