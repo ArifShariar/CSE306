@@ -97,7 +97,6 @@ ffff aaaa bbbb
     <wire from="(1360,540)" to="(1360,690)"/>
     <wire from="(620,700)" to="(620,710)"/>
     <wire from="(510,500)" to="(570,500)"/>
-    <wire from="(1200,720)" to="(1200,740)"/>
     <wire from="(1260,540)" to="(1260,560)"/>
     <wire from="(140,520)" to="(260,520)"/>
     <wire from="(590,420)" to="(650,420)"/>
@@ -185,7 +184,6 @@ ffff aaaa bbbb
     <wire from="(650,520)" to="(690,520)"/>
     <wire from="(710,420)" to="(750,420)"/>
     <wire from="(730,670)" to="(830,670)"/>
-    <wire from="(1200,740)" to="(1200,750)"/>
     <wire from="(550,680)" to="(550,760)"/>
     <wire from="(1030,320)" to="(1520,320)"/>
     <wire from="(710,250)" to="(710,270)"/>
@@ -214,7 +212,6 @@ ffff aaaa bbbb
     <wire from="(100,740)" to="(420,740)"/>
     <wire from="(1100,620)" to="(1140,620)"/>
     <wire from="(1080,680)" to="(1120,680)"/>
-    <wire from="(1200,720)" to="(1240,720)"/>
     <wire from="(1030,220)" to="(1410,220)"/>
     <wire from="(1380,260)" to="(1420,260)"/>
     <wire from="(1470,670)" to="(1510,670)"/>
@@ -658,7 +655,6 @@ f6601 a6000 1d00 1c00 510f4 1e00
       <a name="bit2" val="1"/>
       <a name="bit3" val="0"/>
     </comp>
-    <comp lib="0" loc="(1200,740)" name="Ground"/>
     <comp lib="2" loc="(1540,660)" name="Multiplexer">
       <a name="selloc" val="tr"/>
       <a name="width" val="8"/>
