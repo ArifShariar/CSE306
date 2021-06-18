@@ -24,7 +24,7 @@ string createOpcodeValue(string s){ //Returns opcode value with instruction type
 char createValue(string s){
     int pos = s.find(',');
     if(pos<s.size()) s.replace(pos,1,"");
-
+    
     if(s=="$t0") return '0';
     else if(s=="$t1") return '1';
     else if(s=="$t2") return '2';
@@ -48,8 +48,9 @@ int main(){
     infile.open("input.txt");
     ofstream outfile;
     outfile.open("output.txt");
+    outfile<<"v2.0 raw "<<endl;
 
-    int line_count=-1;
+    int line_count=0;
 
     string operation,source1,source2,destination,shamt;
     int n[5],sum,instrucion_count=0,stack_memory=0,h;
@@ -57,7 +58,7 @@ int main(){
     vector<string>words,instructions; //stores words in a line
     vector<string> stack_instructions;
 
-    map<string,int> mp;
+    map<string,int> mp; 
     int flag;
 
     instructions.push_back("addi $sp, $zero, 255 "); ///stack initialization
@@ -67,11 +68,11 @@ int main(){
             if(str.size()<=1) continue;
             replace(str.begin(),str.end(),',',' ');
             instructions.push_back(str);
-
+        
             int pos1 = str.find("push");
             int pos2 = str.find("pop");
-
-
+            
+            
             stringstream ss(str);
             while(ss>>word){
                 if(word[0]=='/' && word[1]=='/') break;
@@ -90,7 +91,7 @@ int main(){
                         instructions.push_back("sw "+word+", 0($sp)");
                     }
                     instructions.push_back("subi $sp, $sp, 1");
-
+                
                 }else if(pos2>=0 && pos2<str.size()){
                     ss>>word;
                     instructions.push_back("addi $sp, $sp, 1");
@@ -104,8 +105,8 @@ int main(){
         std::cout<<"Unable to open input file"<<endl;
     }
     line_count=-1;
-     for(string s:instructions) {
-         line_count++;
+     for(string s:instructions) {  
+         line_count++;     
         stringstream ss(s);
         while(ss>>word){if(word[0]=='/' && word[1]=='/') break;words.push_back(word); } // cout<<endl;
         if(words.size()>=1){
@@ -115,7 +116,7 @@ int main(){
                 destination = createValue(words[1]);
                 source1 = createValue(words[2]);
                 source2 = createValue(words[3]);
-
+                
                 if(source2=="$") {
                     stringstream int_(words[3]);
                     int_>>h;
@@ -149,13 +150,14 @@ int main(){
                ///converts integer imd to hex
                     immd = intToHexString(imd);
                     int len =immd.size();
-
+                    
                 outfile<<operation[0]<<src<<dest;
-                if(len>1) outfile<<immd[len-2]<< immd[len-1]<<" ";
+                if(len>1) outfile<<immd[len-2]<< immd[len-1]<<" "; 
                 else outfile<<0<<immd[0]<<" ";
 
             }else if(operation[1]=='J'){
-                int Target_Jump_Address = mp[words[1]];
+                int Target_Jump_Address =  mp[words[1]]; 
+                //outfile<<words[1]<<" : "<<std::dec<<mp[words[1]]<<endl;
                 outfile<<operation[0];
                 if(Target_Jump_Address<16) outfile<<"0"<< std::hex <<Target_Jump_Address; //converts integer Target_Jump_Address to hex
                 else outfile<<std::hex <<Target_Jump_Address;
@@ -177,6 +179,6 @@ int main(){
 
 
     if(instrucion_count<256)
-        outfile<<256-instrucion_count<<"*0"<<endl;
+        outfile<<std::dec <<(256-instrucion_count)<<"*0"<<endl;
     outfile.close();
 }
