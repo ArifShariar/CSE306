@@ -48,26 +48,20 @@ int main(){
     infile.open("input.txt");
     ofstream outfile;
     outfile.open("output.txt");
-    outfile<<"v2.0 raw "<<endl;
-
-    int line_count=0;
+    outfile<<"v2.0 raw"<<endl;
 
     string operation,source1,source2,destination,shamt;
-    int n[5],sum,instrucion_count=0,stack_memory=0,h;
+    int h;
     string str,word;
     vector<string>words,instructions; //stores words in a line
-    vector<string> stack_instructions;
 
     map<string,int> mp; 
-    int flag;
 
     instructions.push_back("addi $sp, $zero, 255 "); ///stack initialization
     if(infile.is_open()){   ///need to read whole input to locate all branch labels
         while(getline(infile,str)){
-            line_count++;
             if(str.size()<=1) continue;
             replace(str.begin(),str.end(),',',' ');
-            instructions.push_back(str);
         
             int pos1 = str.find("push");
             int pos2 = str.find("pop");
@@ -78,10 +72,11 @@ int main(){
                 if(word[0]=='/' && word[1]=='/') break;
                 if(word[(int)word.size() -1]==':'){
                     word.replace((int)word.size() -1,1,"");
-                    mp.insert(pair<string,int>(word,line_count)); //stores jump_label with it's line_number
+                    mp.insert(pair<string,int>(word,instructions.size())); ///stores jump_label with it's line_number
                     break;
                 }
-                if(pos1>=0 && pos1<str.size()){
+            }
+            if(pos1>=0 && pos1<str.size()){
                     ss>>word;
                     int offset_pos = word.find('(');
                     if(offset_pos>=0 && offset_pos<str.size()){
@@ -96,21 +91,20 @@ int main(){
                     ss>>word;
                     instructions.push_back("addi $sp, $sp, 1");
                     instructions.push_back("lw "+word+", 0($sp)");
+                }else{
+                    instructions.push_back(str);
                 }
-            }
         }
         infile.close();
     }
     else{
         std::cout<<"Unable to open input file"<<endl;
     }
-    line_count=-1;
-     for(string s:instructions) {  
-         line_count++;     
-        stringstream ss(s);
+    for(int i=0;i<instructions.size();i++) {  
+        cout<<i+1<<" "<<instructions[i]<<endl;
+        stringstream ss(instructions[i]);
         while(ss>>word){if(word[0]=='/' && word[1]=='/') break;words.push_back(word); } // cout<<endl;
         if(words.size()>=1){
-            instrucion_count++;
             operation = createOpcodeValue(words[0]);
             if(operation[1]=='R'){
                 destination = createValue(words[1]);
@@ -124,7 +118,6 @@ int main(){
                 }
                 shamt ="0";
                 if(operation[0]=='3' || operation[0]=='8') {shamt = source2; source2 = source1;source1="0";}
-                //outfile<<words[0]<<" "<<words[1]<<" "<<words[2]<<" "<<words[3]<<endl;
                 outfile<<operation[0]<<source1<<source2<<destination<<shamt<<" ";
             }
             else if(operation[1]=='I'){
@@ -140,7 +133,8 @@ int main(){
                 }else if(operation[0]=='5' || operation[0]=='9'){  ///if instruction is beq/bneq
                     src = dest;
                     dest = createValue(words[2]);
-                    imd = mp[words[3]]-(line_count+1);
+                    //outfile<<mp[words[3]]<<" "<<(i+2)<<endl;
+                    imd = mp[words[3]]-(i+1);
                 }
                 else{
                     src = createValue(words[2]); ///convert offset value to integer and stores in imd;
@@ -157,28 +151,21 @@ int main(){
 
             }else if(operation[1]=='J'){
                 int Target_Jump_Address =  mp[words[1]]; 
-                //outfile<<words[1]<<" : "<<std::dec<<mp[words[1]]<<endl;
                 outfile<<operation[0];
                 if(Target_Jump_Address<16) outfile<<"0"<< std::hex <<Target_Jump_Address; //converts integer Target_Jump_Address to hex
                 else outfile<<std::hex <<Target_Jump_Address;
                 outfile<<"00 ";
             }else if(words[0]=="push"){
-                int offset_pos = words[1].find('(');
-                if(offset_pos>=0 && offset_pos<str.size()) line_count-=3;
-                else line_count-=2;
 
-            }else if(words[0]=="pop") line_count-=2;
+            }else if(words[0]=="pop") {}
             else {
-                if((line_count+1)<16) outfile<<"00"<< std::hex <<(line_count+1); ///converts integer (line_count+1) to hex
-                else outfile<<0<<std::hex <<(line_count+1);
+                if((i+1)<16) outfile<<"00"<< std::hex <<(i+1); ///converts integer (line_count+1) to hex
+                else outfile<<0<<std::hex <<(i+1);
                 outfile<<"00 ";
             }
         }
         words.clear();
+       // outfile<<instructions[i]<<endl;
     }
-
-
-    if(instrucion_count<256)
-        outfile<<std::dec <<(256-instrucion_count)<<"*0"<<endl;
     outfile.close();
 }
