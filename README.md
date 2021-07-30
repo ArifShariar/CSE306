@@ -1,6 +1,9 @@
 # CSE306
 CSE 306 : Computer Architecture Sessional
+
+
 **How to Run Simulation:**
+
 Load `.circ` files in [Logisim.](http://www.cburch.com/logisim/) For details, read individual *Reports* and *Specifications*. 
 
 All circuits have been implemented following "SPECIFIC" specifications for **B2 GROUP 5**
